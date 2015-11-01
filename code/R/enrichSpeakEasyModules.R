@@ -8,7 +8,7 @@ args = commandArgs(TRUE)
 cat("\014")
 
 # Clear R workspace
-setwd('/home/ec2-user/Work/Github/metanetwork/R')
+setwd('/home/ec2-user/Work/Github/ampAD_CrossNetworkComparison/code/R')
 ############################################################################################################
 
 ############################################################################################################
@@ -216,6 +216,7 @@ algo = 'Fisher'
 ENR_OBJ = File(paste(gsub(' ','_',FNAME),'enrichmentResults.tsv',sep='_'), name = paste(FNAME,algo), parentId = parentId)
 annotations(ENR_OBJ) = annotations(MOD_OBJ)
 ENR_OBJ@annotations$fileType = 'tsv'
+ENR_OBJ@annotations$dataType = 'Enrichment'
 ENR_OBJ@annotations$enrichmentMethod = 'Fisher'
 ENR_OBJ@annotations$enrichmentGeneSet = 'Enrichr and AD'
 ENR_OBJ = synStore(ENR_OBJ, 
