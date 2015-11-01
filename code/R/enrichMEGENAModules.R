@@ -20,7 +20,6 @@ library(tools)
 library(stringr)
 library(igraph)
 library(data.table)
-library(biomaRt)
 
 # Needs the dev branch
 library(rGithubClient)
@@ -153,8 +152,12 @@ FNAME = paste(annotate$brainRegion, annotate$disease, 'Enrichment', 'METANETWORK
 parentId = MOD_OBJ@properties$parentId
 
 # Load modules 
-MOD = data.table::fread(MOD_OBJ@filePath, data.table=F, header=F) %>%
-  plyr::rename(c("V1" = "hgnc_symbol", "V2" = "modulelabels"))
+MOD = read.table(MOD_OBJ@filePath, sep='\t', quote='', fill=NA)
+MOD = reshape2::melt(MOD, id.vars = 'V1') %>%
+  dplyr::filter(value != '') %>%
+  dplyr::select(-(variable)) %>%
+  plyr::rename(c("value" = "hgnc_symbol", "V1" = "modulelabels"))
+
 ############################################################################################################
 
 ############################################################################################################
