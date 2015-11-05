@@ -175,7 +175,7 @@ GeneSets = c(GeneSets.AD, GeneSets.Enrichr)
 enrichResults = list()
 for (name in unique(MOD$modulelabels)){
   genesInModule = unique(MOD$hgnc_symbol[MOD$modulelabels == name])  
-  if (length(genesInModule) > 0){
+  if (length(genesInModule) > 20){
     tmp = lapply(GeneSets,
                  function(x, genesInModule, genesInBackground){
                    tmp = as.data.frame(t(sapply(x, fisherEnrichment, genesInModule, genesInBackground)))

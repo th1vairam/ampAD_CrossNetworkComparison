@@ -16,7 +16,12 @@ library(data.table)
 synapseLogin()
 
 # Get all files and folder
-Module.Files = synQuery('select * from file where projectId=="syn4907617" and methodName == "MEGENA" and dataType == "Modules"')
+Module.Files = synQuery('select * from file where projectId=="syn4907617" and methodName == "MEGENA" and dataType == "Modules"') %>%
+	dplyr::mutate(uniqueName = paste(file.brainRegion, file.disease, sep='.'))
+Enrich.Files = synQuery('select * from file where projectId=="syn4907617" and methodName == "MEGENA" and dataType == "Enrichment"')  %>%
+	dplyr::mutate(uniqueName = paste(file.brainRegion, file.disease, sep='.'))
+
+Module.Files = Module.Files %>% dplyr::filter( Module.Files$uniqueName %in% setdiff(Module.Files$uniqueName, Enrich.Files$uniqueName))
 
 # Make directory and write shell scripts for running these files
 system('mkdir sgeEnrichSub')
